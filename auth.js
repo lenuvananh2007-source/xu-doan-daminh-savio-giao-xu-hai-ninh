@@ -43,5 +43,13 @@ function renderUserChip(){
 window.hasRole=r=>TNTT.roles.includes(r);
 window.requireLogin=()=>{if(!TNTT.user){authModal('login');return false}return true};
 
+function loadExtraScript(src,id){if(document.getElementById(id))return;const s=document.createElement('script');s.id=id;s.src=src;s.defer=true;document.head.appendChild(s)}
+document.addEventListener('DOMContentLoaded',()=>{
+  loadExtraScript('/admin-tools.js','admin-tools-js');
+  loadExtraScript('https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js','xlsx-js');
+  loadExtraScript('https://cdn.jsdelivr.net/npm/docx@9.5.1/dist/index.iife.js','docx-js');
+  setTimeout(()=>loadExtraScript('/export-tools.js','export-tools-js'),500);
+});
+
 sb.auth.onAuthStateChange(()=>setTimeout(loadAuthState,0));
 document.addEventListener('DOMContentLoaded',loadAuthState);
