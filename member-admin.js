@@ -68,3 +68,4 @@ let timer;const schedule=()=>{clearTimeout(timer);timer=setTimeout(enhance,120)}
 document.addEventListener('DOMContentLoaded',()=>{const p=document.getElementById('page');if(p)new MutationObserver(schedule).observe(p,{childList:true,subtree:true});schedule()});
 window.addEventListener('tntt-auth-changed',schedule);
 })();
+['/member-roster-admin.js','/site-logo.js'].forEach(src=>{if(!document.querySelector(`script[src="${src}"]`)){const s=document.createElement('script');s.src=src;document.head.appendChild(s)}});
