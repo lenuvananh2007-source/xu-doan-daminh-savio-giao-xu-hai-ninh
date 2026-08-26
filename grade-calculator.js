@@ -1,0 +1,15 @@
+(()=>{
+const num=v=>{const n=Number(v);return Number.isFinite(n)?n:null};
+const round=v=>v==null?null:Math.round(v*100)/100;
+function category(i){const s=((i?.category||'')+' '+(i?.name||'')).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');if(/thuong xuyen|\btx\b/.test(s))return'tx';if(/giua ky|giua ki|\bgk\b/.test(s))return'gk';if(/cuoi ky|cuoi ki|\bck\b/.test(s))return'ck';return'other'}
+window.TNTTGradeCalc={
+ semester(items,values){const groups={tx:[],gk:[],ck:[],other:[]};items.forEach((it,k)=>{const v=num(values[k]);if(v!=null)groups[category(it)].push(v)});const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;const tx=avg(groups.tx),gk=avg(groups.gk),ck=avg(groups.ck);let semester=null;
+ // Công thức mặc định hệ thống: TX hệ số 1, Giữa kỳ hệ số 2, Cuối kỳ hệ số 3. Nếu thiếu nhóm nào, chỉ tính trên các nhóm đã có.
+ const weighted=[];groups.tx.forEach(v=>weighted.push([v,1]));groups.gk.forEach(v=>weighted.push([v,2]));groups.ck.forEach(v=>weighted.push([v,3]));groups.other.forEach(v=>weighted.push([v,1]));if(weighted.length)semester=weighted.reduce((s,[v,w])=>s+v*w,0)/weighted.reduce((s,[v,w])=>s+w,0);return{tx:round(tx),gk:round(gk),ck:round(ck),semester:round(semester)}} ,
+ year(hk1,hk2){const a=num(hk1),b=num(hk2);if(a==null&&b==null)return null;if(a==null)return round(b);if(b==null)return round(a);return round((a+b*2)/3)}
+};
+function enhance(){const table=document.querySelector('#page .grade-table');if(!table)return;const heads=[...table.querySelectorAll('thead th')].map(x=>x.textContent.trim());const studentRows=[...table.querySelectorAll('tbody tr')].filter(r=>r.querySelector('.score-input'));studentRows.forEach(row=>{const inputs=[...row.querySelectorAll('.score-input')];const items=inputs.map((_,i)=>({name:heads[i+1]||'',category:heads[i+1]||''}));const values=inputs.map(i=>i.value);const calc=window.TNTTGradeCalc.semester(items,values);let avg=row.querySelector('td:last-child');if(avg){avg.innerHTML=`<b>${calc.semester??'—'}</b><small style="display:block;color:#68758a">Tự tính</small>`}inputs.forEach(inp=>{if(inp.dataset.calcBound)return;inp.dataset.calcBound='1';inp.addEventListener('input',()=>setTimeout(enhance,0));inp.addEventListener('change',()=>setTimeout(enhance,150))})});
+ if(!table.parentElement?.querySelector('.grade-formula-note')){const d=document.createElement('div');d.className='footer-note grade-formula-note';d.innerHTML='<b>Điểm được tự động tính:</b> điểm thường xuyên hệ số 1 · giữa kỳ hệ số 2 · cuối kỳ hệ số 3. TB học kỳ cập nhật ngay khi nhập điểm. TB cả năm = (TB HKI + 2 × TB HKII) / 3.';table.parentElement.appendChild(d)}
+}
+const mo=new MutationObserver(()=>setTimeout(enhance,20));document.addEventListener('DOMContentLoaded',()=>{const p=document.getElementById('page');if(p)mo.observe(p,{subtree:true,childList:true});setTimeout(enhance,500)});window.addEventListener('tntt-auth-changed',()=>setTimeout(enhance,200));
+})();
