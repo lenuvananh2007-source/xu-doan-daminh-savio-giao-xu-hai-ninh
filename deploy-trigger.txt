@@ -1,0 +1,2 @@
+Kích hoạt tự động triển khai Vercel sau khi kết nối GitHub.
+Thời điểm: 26/08/2026 19:42 GMT+7
