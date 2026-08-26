@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xu-doan-daminh-savio-hai-ninh.vercel.app/sitemap.xml
