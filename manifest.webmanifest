@@ -1,0 +1,21 @@
+{
+  "name": "Xứ đoàn Đaminh Savio - Hải Ninh",
+  "short_name": "Đaminh Savio",
+  "description": "Ứng dụng quản lý Xứ đoàn Đaminh Savio - Giáo xứ Hải Ninh",
+  "lang": "vi",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#8a641f",
+  "icons": [
+    {
+      "src": "/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
