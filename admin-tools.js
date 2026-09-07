@@ -13,4 +13,12 @@
     pwaScript.dataset.pwaLoader='true';
     document.head.appendChild(pwaScript);
   }
+
+  if (!document.querySelector('script[data-att-bdh-guard]')) {
+    const guardScript=document.createElement('script');
+    guardScript.src='/attendance-bdh-guard.js?v=20260907-1';
+    guardScript.defer=true;
+    guardScript.dataset.attBdhGuard='true';
+    document.head.appendChild(guardScript);
+  }
 })();
