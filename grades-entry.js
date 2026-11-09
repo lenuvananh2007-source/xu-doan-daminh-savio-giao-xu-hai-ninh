@@ -22,12 +22,11 @@ async function render(name){
  <div class="tabs"><button class="tab" onclick="catechism('${esc(name)}','overview')">Tổng quan</button><button class="tab" onclick="catechism('${esc(name)}','schedule')">📅 Lịch học</button><button class="tab" onclick="catechism('${esc(name)}','attendance')">✓ Điểm danh</button><button class="tab active">★ Điểm số</button><button class="tab" onclick="catechism('${esc(name)}','homework')">🔔 Bài tập</button></div>
  <div id="gradeEntryRoot"><div class="panel empty">Đang tải dữ liệu điểm…</div></div>`;
  const root=document.getElementById('gradeEntryRoot');
- const [{data:cl,error:ce},{data:ms,error:me}] = await Promise.all([
-  sb.from('classes').select('id,name').eq('name',name).maybeSingle(),
-  sb.from('class_members').select('member_id,members(id,full_name,branch,team,status)').eq('status','active')
- ]);
- if(ce||me){root.innerHTML='<div class="panel">Không tải được dữ liệu lớp: '+esc((ce||me).message)+'</div>';return}
+ const {data:cl,error:ce}=await sb.from('classes').select('id,name').eq('name',name).maybeSingle();
+ if(ce){root.innerHTML='<div class="panel">Không tải được dữ liệu lớp: '+esc(ce.message)+'</div>';return}
  if(!cl){root.innerHTML='<div class="panel">Không tìm thấy lớp này trong cơ sở dữ liệu.</div>';return}
+ const {data:ms,error:me}=await sb.from('class_members').select('member_id,members(id,full_name,branch,team,status)').eq('class_id',cl.id).eq('status','active');
+ if(me){root.innerHTML='<div class="panel">Không tải được danh sách học viên: '+esc(me.message)+'</div>';return}
  const members=(ms||[]).map(x=>x.members).filter(m=>m&&m.status!=='Ngưng sinh hoạt').sort((a,b)=>String(a.full_name).localeCompare(String(b.full_name),'vi'));
  const classMemberIds=new Set(members.map(m=>m.id));
  const [settingRes]=await Promise.all([sb.from('grade_settings').select('regular_weight,midterm_weight,final_weight').eq('class_id',cl.id).eq('academic_year','2026-2027').eq('term','HK1').maybeSingle()]);
