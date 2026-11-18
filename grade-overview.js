@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const N=['Lớp Khai Tâm','Lớp Đến Bàn Tiệc Thánh','Lớp Thêm Sức','Lớp Sống đạo'];
 const M={'Lớp Khai Tâm':['Khai Tâm','#d98eaf'],'Lớp Đến Bàn Tiệc Thánh':['Đến Bàn Tiệc Thánh','#438f69'],'Lớp Thêm Sức':['Thêm Sức','#4b8fc5'],'Lớp Sống đạo':['Sống Đạo','#b99436'],'Lớp HT-GLV':['HT–GLV','#65758b']};
-const G=['admin','bdh','xu_doan_truong','pho_nghien_huan','pho_noi_vu','thu_ky','truong_ban_giao_ly','giao_ly_vien'];
+const G=['admin','bdh','xu_doan_truong','pho_nghien_huan','pho_noi_vu','thu_ky','truong_ban_giao_ly'];
 const R={'Lớp Khai Tâm':['glv_khai_tam','tro_giang_khai_tam'],'Lớp Đến Bàn Tiệc Thánh':['glv_den_ban_tiec_thanh','tro_giang_den_ban_tiec_thanh'],'Lớp Thêm Sức':['glv_them_suc','tro_giang_them_suc'],'Lớp Sống đạo':['glv_song_dao','tro_giang_song_dao']};
 const $=s=>document.querySelector(s), E=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const roles=()=>window.TNTT?.roles||[], global=()=>roles().some(x=>G.includes(x)), assigned=()=>N.filter(n=>(R[n]||[]).some(x=>roles().includes(x)));
